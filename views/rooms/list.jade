@@ -13,9 +13,9 @@ block content
         tbody
             each room in rooms
                 tr
-                    td(style="width: 50px;"): a(href="/admin/rooms/delete/#{room.id}")
+                    td(style="width: 50px;"): a(href="/admin/rooms/delete/#{room._id}")
                         span.glyphicon.glyphicon-remove
                     td= room.name
-                    td(style="width: 50px;"): a(href="/admin/rooms/edit/#{room.id}")
+                    td(style="width: 50px;"): a(href="/admin/rooms/edit/#{room._id}")
                         span.glyphicon.glyphicon-pencil
-                    td= room.id
+                    td= room._id
