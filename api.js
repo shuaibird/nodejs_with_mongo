@@ -1,9 +1,8 @@
-var express = require("express");
-var rooms = require("./data/rooms.json");
-var messages = require("./data/messages.json");
-var _ = require("lodash");
-var uuid = require("node-uuid");
-var users = require("./data/users.json");
+var express = require("express")
+var messages = require("./data/messages.json")
+var _ = require("lodash")
+var uuid = require("node-uuid")
+var users = require("./data/users.json")
 
 
 var {connect, ObjectID} = require('./data/chatDB')
