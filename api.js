@@ -10,33 +10,24 @@ var {MongoClient, ObjectID} = mongodb
 
 
 var url = 'mongodb://localhost/chat';
-var connectPromise = MongoClient.connect(url)
+var connect = MongoClient.connect(url)
 
 
 var router = express.Router();
 module.exports = router;
 
+
 router.get("/rooms", function (req, res, next) {
-  connectPromise
-    .then(db => {
-      db.collection('rooms').find().toArray()
-        .then(rooms => {
-          res.json(rooms)
-        })
-        .catch(next)
-    })
+  connect
+    .then(db => db.collection('rooms').find().toArray())
+    .then(rooms => res.json(rooms))
     .catch(next)
 });
 
 router.get("/users", function (req, res, next) {
-  connectPromise
-    .then(db => {
-      db.collection('users').find().toArray()
-        .then(users => {
-          res.json(users)
-        })
-        .catch(next)
-    })
+  connect
+    .then(db => db.collection('users').find().toArray())
+    .then(users => res.json(users))
     .catch(next)
 });
 
