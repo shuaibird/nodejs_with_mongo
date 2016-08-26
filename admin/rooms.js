@@ -18,60 +18,52 @@ router.get('/', (req, res, next) => {
 
 
 router.route('/add')
-  .get(function (req, res) {
-    res.render("rooms/add");
+  .get((req, res) => res.render("rooms/add"))
+  .post((req, res, next) => {
+    var room = {name: req.body.name}
+    connect
+      .then(db => db.collection('rooms').insertOne(room))
+      .then(() => res.redirect(req.baseUrl))
+      .catch(next)
   })
-  .post(function (req, res) {
-    var room = {
-      name: req.body.name
-    };
-    MongoClient.connect(url, (err, db) => {
-      db.collection('rooms').insertOne(room, (err, result) => {
-        res.redirect(req.baseUrl);
-      })
-    })
-  });
+
 
 router.route('/edit/:id')
-  .all(function (req, res, next) {
-    var roomId = req.params.id;
+  .all((req, res, next) => {
+    var roomId = req.params.id
+    var filtered = { _id: new ObjectID(roomId)}
 
-    MongoClient.connect(url, (err, db) => {
-      var filter = {_id: new ObjectID(roomId)}
-      db.collection('rooms').find(filter).next((err, room) => {
+    connect
+      .then(db => db.collection('rooms').find(filtered).next())
+      .then(room => {
         if (!room) {
-          res.sendStatus(404);
-          return;
+          res.sendStatus(404)
+          return
         }
-        res.locals.room = room;
+        res.locals.room = room
         next()
-        db.close()
       })
-    })
+      .catch(next)
   })
-  .get(function (req, res) {
-    res.render("rooms/edit");
-  })
-  .post(function (req, res) {
-    var roomId = req.params.id;
-    MongoClient.connect(url, (err, db) => {
-      var filter = {_id: new ObjectID(roomId)}
-      var newRoom = {
-        name: req.body.name
-      }
-      db.collection('rooms').replaceOne(filter, newRoom, (err, result) => {
-        res.redirect(req.baseUrl);
-      })
-    })
-  });
+  .get((req, res) => res.render("rooms/edit"))
+  .post((req, res, next) => {
+    var roomId = req.params.id
+    var filtered= {_id: new ObjectID(roomId)}
+    var newRoom = {name: req.body.name}
 
-router.get('/delete/:id', function (req, res) {
-  var roomId = req.params.id;
-
-  MongoClient.connect(url, (err, db) => {
-    var filter = {_id: new ObjectID(roomId)}
-    db.collection('rooms').deleteOne(filter, (err, result) => {
-      res.redirect(req.baseUrl);
-    })
+    connect
+      .then(db => db.collection('rooms').replaceOne(filtered, newRoom))
+      .then(() => res.redirect(req.baseUrl))
+      .catch(next)
   })
-});
+
+
+router.get('/delete/:id', (req, res, next) => {
+  var roomId = req.params.id
+  var filtered = {_id: new ObjectID(roomId)}
+
+  connect
+    .then(db => db.collection('rooms').deleteOne(filtered))
+    .then(() => res.redirect(req.baseUrl))
+    .catch(next)
+})
