@@ -10,9 +10,9 @@ router.get('/', (req, res, next) => {
   connect
     .then(db => db.collection('rooms').find().toArray())
     .then(rooms => res.render("rooms/list", {
-        title: "Admin Rooms",
-        rooms: rooms
-      }))
+      title: "Admin Rooms",
+      rooms: rooms
+    }))
     .catch(next)
 })
 
