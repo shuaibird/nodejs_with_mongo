@@ -5,31 +5,27 @@ var _ = require("lodash");
 var uuid = require("node-uuid");
 var users = require("./data/users.json");
 
-var mongodb = require('mongodb')
-var {MongoClient, ObjectID} = mongodb
+
+var {connect, ObjectID} = require('./data/chatDB')
 
 
-var url = 'mongodb://localhost/chat';
-var connect = MongoClient.connect(url)
+var router = express.Router()
+module.exports = router
 
 
-var router = express.Router();
-module.exports = router;
-
-
-router.get("/rooms", function (req, res, next) {
+router.get("/rooms", (req, res, next) => {
   connect
     .then(db => db.collection('rooms').find().toArray())
     .then(rooms => res.json(rooms))
     .catch(next)
-});
+})
 
-router.get("/users", function (req, res, next) {
+router.get("/users", (req, res, next) => {
   connect
     .then(db => db.collection('users').find().toArray())
     .then(users => res.json(users))
     .catch(next)
-});
+})
 
 router.route("/rooms/:roomId/messages")
   .get(function (req, res) {

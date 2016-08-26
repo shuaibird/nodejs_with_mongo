@@ -1,24 +1,19 @@
-var express = require("express");
-var mongodb = require('mongodb')
-var {MongoClient, ObjectID} = mongodb
+var express = require("express")
+var {connect, ObjectID} = require('../data/chatDB')
 
-var url = 'mongodb://localhost/chat';
 
-var router = express.Router();
-module.exports = router;
+var router = express.Router()
+module.exports = router
 
-router.get('/', function (req, res, next) {
-  MongoClient.connect(url, (err, db) => {
-    if(err) return next(err)
-      
-    db.collection('rooms').find().toArray((err, rooms) => {
-      res.render("rooms/list", {
+
+router.get('/', (req, res, next) => {
+  connect
+    .then(db => db.collection('rooms').find().toArray())
+    .then(rooms => res.render("rooms/list", {
         title: "Admin Rooms",
         rooms: rooms
-      })
-      db.close()
-    })
-  })
+      }))
+    .catch(next)
 })
 
 

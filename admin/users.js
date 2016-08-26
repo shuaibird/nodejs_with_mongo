@@ -4,7 +4,7 @@ var express = require("express");
 var users = require("./../data/users.json");
 var os = require('os');
 
-var router = express.Router();
+var router = express.Router()
 module.exports = router;
 
 router.get('/', function (req, res) {
