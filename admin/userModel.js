@@ -1,7 +1,5 @@
 var mongoose = require('mongoose')
 
-mongoose.Promise = global.Promise
-
 var schemaOptions = {
   collection: 'users'
 }

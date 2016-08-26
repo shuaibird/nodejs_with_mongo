@@ -3,9 +3,10 @@ var mongoose = require('mongoose')
 var users = require('./users.json')
 var User = require('../admin/userModel')
 
-var url = 'mongodb://localhost/chat'
 
-mongoose.connect(url)
+var {connectMongoose} = require('./chatDB')
+
+connectMongoose
   .then(importUsers)
 
 

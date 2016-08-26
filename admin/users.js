@@ -1,18 +1,30 @@
-var uuid = require("node-uuid");
-var _ = require("lodash");
-var express = require("express");
-var users = require("./../data/users.json");
-var os = require('os');
+var uuid = require("node-uuid")
+var _ = require("lodash")
+var express = require("express")
+var users = require("./../data/users.json")
+var os = require('os')
+
+
+var {connectMongoose} = require('../data/chatDB')
+
+
+var User = require('./userModel')
 
 var router = express.Router()
-module.exports = router;
+module.exports = router
 
-router.get('/', function (req, res) {
-  res.render("users/list", {
-    title: "Admin Users",
-    users: users
-  });
-});
+
+router.get('/', (req, res) => {
+  connectMongoose
+    .then(() => User.find().exec())
+    .then(users => {
+      res.render("users/list", {
+        title: "Admin Users",
+        users: users
+      })
+    })
+})
+
 
 router.route('/add')
   .get(function (req, res) {
