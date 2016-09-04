@@ -1,4 +1,4 @@
-var express = require("express")
+var express = require('express')
 var os = require('os')
 var {connectMongoose} = require('../data/chatDB')
 var User = require('./userModel')
@@ -11,14 +11,14 @@ function userFromRequestBody(user, request) {
   user.alias = request.body.alias
   user.roles = request.body.roles
   user.contact = {
-    phone: request.body["contact.phone"],
-    email: request.body["contact.email"]
+    phone: request.body['contact.phone'],
+    email: request.body['contact.email']
   }
   user.address = {
-    lines: request.body["address.lines"].split(os.EOL),
-    city: request.body["address.city"],
-    state: request.body["address.state"],
-    zip: request.body["address.zip"]
+    lines: request.body['address.lines'].split(os.EOL),
+    city: request.body['address.city'],
+    state: request.body['address.state'],
+    zip: request.body['address.zip']
   }
 }
 
@@ -27,8 +27,8 @@ router.get('/', (req, res) => {
   connectMongoose
     .then(() => User.find().exec())
     .then(users => {
-      res.render("users/list", {
-        title: "Admin Users",
+      res.render('users/list', {
+        title: 'Admin Users',
         users: users
       })
     })
@@ -36,7 +36,7 @@ router.get('/', (req, res) => {
 
 
 router.route('/add')
-  .get((req, res) => res.render("users/add"))
+  .get((req, res) => res.render('users/add'))
   .post((req, res) => {
     var user = new User()
     userFromRequestBody(user, req)
@@ -59,7 +59,7 @@ router.route('/edit/:id')
         next()
       })
   })
-  .get((req, res) => res.render("users/edit"))
+  .get((req, res) => res.render('users/edit'))
   .post((req, res) => {
     userFromRequestBody(res.locals.user, req)
     res.locals.user.save()

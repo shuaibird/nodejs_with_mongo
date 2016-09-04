@@ -1,4 +1,4 @@
-var express = require("express")
+var express = require('express')
 var {connect, ObjectID} = require('../data/chatDB')
 
 
@@ -9,8 +9,8 @@ module.exports = router
 router.get('/', (req, res, next) => {
   connect
     .then(db => db.collection('rooms').find().toArray())
-    .then(rooms => res.render("rooms/list", {
-      title: "Admin Rooms",
+    .then(rooms => res.render('rooms/list', {
+      title: 'Admin Rooms',
       rooms: rooms
     }))
     .catch(next)
@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
 
 
 router.route('/add')
-  .get((req, res) => res.render("rooms/add"))
+  .get((req, res) => res.render('rooms/add'))
   .post((req, res, next) => {
     var room = {name: req.body.name}
     connect
@@ -45,7 +45,7 @@ router.route('/edit/:id')
       })
       .catch(next)
   })
-  .get((req, res) => res.render("rooms/edit"))
+  .get((req, res) => res.render('rooms/edit'))
   .post((req, res, next) => {
     var roomId = req.params.id
     var filtered= {_id: new ObjectID(roomId)}
