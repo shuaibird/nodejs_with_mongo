@@ -24,11 +24,16 @@ function userFromRequestBody(user, request) {
 
 
 router.get('/', (req, res, next) => {
-  User.find().exec()
+
+  var alias = req.query.alias
+  var query = alias ? {alias} : {}
+
+  User.find(query).exec()
     .then(users => {
       res.render('users/list', {
         title: 'Admin Users',
-        users: users
+        users,
+        alias
       })
     })
     .catch(next)

@@ -1,25 +1,33 @@
 extends ../layout
 
 block content
-    h1 Users
-    a.btn.btn-primary(href="/admin/users/add") Create a new user
-    table.table.table-striped
-        thead
-            tr
-                th
-                th Alias
-                th
-                th Roles
-                th City
-                th State
-        tbody
-            each user in users
-                tr
-                    td(style="width: 50px;"): a(href="/admin/users/delete/#{user.id}")
-                        span.glyphicon.glyphicon-remove
-                    td= user.alias
-                    td(style="width: 50px;"): a(href="/admin/users/edit/#{user.id}")
-                        span.glyphicon.glyphicon-pencil
-                    td= user.roles
-                    td= user.address.city
-                    td= user.address.state
+  h1 Users
+    
+  form(method="get")
+    .form-group
+      label(for="alias") Alias
+      input.form-control(name="alias", type="text", value="#{alias}")
+    .btn-toolbar
+      button.btn.btn-primary(type="submit") Search
+      a.btn.btn-primary(href="/admin/users/add") Create a new user
+
+  table.table.table-striped
+    thead
+      tr
+        th
+        th Alias
+        th
+        th Roles
+        th City
+        th State
+    tbody
+      each user in users
+        tr
+          td(style="width: 50px;"): a(href="/admin/users/delete/#{user.id}")
+            span.glyphicon.glyphicon-remove
+          td= user.alias
+          td(style="width: 50px;"): a(href="/admin/users/edit/#{user.id}")
+            span.glyphicon.glyphicon-pencil
+          td= user.roles
+          td= user.address.city
+          td= user.address.state
