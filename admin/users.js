@@ -24,8 +24,7 @@ function userFromRequestBody(user, request) {
 
 
 router.get('/', (req, res, next) => {
-  connectMongoose
-    .then(() => User.find().exec())
+  User.find().exec()
     .then(users => {
       res.render('users/list', {
         title: 'Admin Users',
