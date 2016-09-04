@@ -12,6 +12,7 @@ var close = cb => {
 
 
 var mongoose = require('mongoose')
+mongoose.set('debug', true)
 mongoose.Promise = global.Promise
 var connectMongoose = mongoose.connect(url)
 
