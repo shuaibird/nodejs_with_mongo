@@ -62,8 +62,8 @@ router.route('/edit/:id')
       })
       .catch(next)
   })
-  .get((req, res) => res.render('users/edit'))
-  .post((req, res) => {
+  .get((req, res, next) => res.render('users/edit'))
+  .post((req, res, next) => {
     userFromRequestBody(res.locals.user, req)
     res.locals.user.save()
       .then(() => res.redirect(req.baseUrl))
@@ -71,7 +71,7 @@ router.route('/edit/:id')
   })
 
 
-router.get('/delete/:id', (req, res) => {
+router.get('/delete/:id', (req, res, next) => {
   var userId = req.params.id
   User.remove({_id: userId})
     .then(() => res.redirect(req.baseUrl))
