@@ -23,7 +23,7 @@ function userFromRequestBody(user, request) {
 }
 
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   connectMongoose
     .then(() => User.find().exec())
     .then(users => {
@@ -32,16 +32,18 @@ router.get('/', (req, res) => {
         users: users
       })
     })
+    .catch(next)
 })
 
 
 router.route('/add')
-  .get((req, res) => res.render('users/add'))
-  .post((req, res) => {
+  .get((req, res, next) => res.render('users/add'))
+  .post((req, res, next) => {
     var user = new User()
     userFromRequestBody(user, req)
     user.save()
       .then(() => res.redirect(req.baseUrl))
+      .catch(next)
   })
 
 
@@ -58,12 +60,14 @@ router.route('/edit/:id')
         res.locals.userHasRole = role => (user.roles || []).indexOf(role) > -1
         next()
       })
+      .catch(next)
   })
   .get((req, res) => res.render('users/edit'))
   .post((req, res) => {
     userFromRequestBody(res.locals.user, req)
     res.locals.user.save()
       .then(() => res.redirect(req.baseUrl))
+      .catch(next)
   })
 
 
@@ -71,4 +75,5 @@ router.get('/delete/:id', (req, res) => {
   var userId = req.params.id
   User.remove({_id: userId})
     .then(() => res.redirect(req.baseUrl))
+    .catch(next)
 })
