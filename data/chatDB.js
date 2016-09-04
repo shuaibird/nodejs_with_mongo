@@ -1,5 +1,4 @@
-var mongodb = require('mongodb')
-var {MongoClient, ObjectID} = mongodb
+var {MongoClient, ObjectID, Logger} = require('mongodb')
 
 var url = 'mongodb://localhost/chat'
 var connect = MongoClient.connect(url)
