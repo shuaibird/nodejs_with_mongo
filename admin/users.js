@@ -26,7 +26,7 @@ function userFromRequestBody(user, request) {
 router.get('/', (req, res, next) => {
 
   var alias = req.query.alias
-  var query = alias ? {alias} : {}
+  var query = alias ? {alias: {$regex: alias}} : {}
 
   User.find(query).exec()
     .then(users => {
